@@ -1,0 +1,26 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: cashshare
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: onepa-badminton-bot
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: onepaBadmintonBot
+
+package:
+    exclude:
+        - node_modules/form-data/**
+        - node_modules/combined-stream/**
+
+provider:
+    name: aws
+    runtime: nodejs20.x
+    region: ap-southeast-1
+
+functions:
+    badmintonHandler:
+        handler: handler.run
+        events:
+            - schedule: rate(1 minute) # Every day at 9 AM UTC+0
+
+plugins:
+    - serverless-offline
+    - serverless-dotenv-plugin

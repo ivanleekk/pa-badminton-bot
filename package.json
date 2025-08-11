@@ -1,0 +1,11 @@
+{
+    "type": "module",
+    "dependencies": {
+        "dotenv": "^17.2.1",
+        "serverless-dotenv-plugin": "^1.1.5"
+    },
+    "devDependencies": {
+        "@types/node-telegram-bot-api": "^0.64.10",
+        "serverless-offline": "^14.4.0"
+    }
+}
