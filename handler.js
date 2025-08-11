@@ -2,36 +2,7 @@ import dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
-const token = process.env.TELEGRAM_BOT_TOKEN;
-const groupChatId = process.env.GROUP_CHAT_ID;
-export async function sendMessage(chatId: string, text: string) {
-    try {
-        const res = await fetch(`${process.env.TELEGRAM_BOT_REQUEST_URL}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                chat_id: chatId,
-                text: text,
-                parse_mode: "HTML",
-            }),
-        });
-
-        const data = await res.json();
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(data),
-        };
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify(error),
-        };
-    }
-}
-
-
-export async function run(event: APIGatewayProxyEvent, context: Context) {
+export async function run(event, context) {
     const checkDate = new Date();
     checkDate.setDate(new Date().getDate() + 16)
     const formattedDate = `${String(checkDate.getDate()).padStart(2, '0')}/${String(checkDate.getMonth() + 1).padStart(2, '0')}/${checkDate.getFullYear()}`;
@@ -80,14 +51,15 @@ https://www.onepa.gov.sg/facilities/availability?facilityId=potongpasircc_BADMIN
 <u><b>Near NUS</b></u>
 
 <i>Buona Vista:</i>
-https://www.onepa.gov.sg/facilities/availability?facilityId=kallangcc_BADMINTONCOURTS&date=${formattedDate}&time=all`
-    console.log("Sending message to group chat...");
-    console.log(`Group Chat ID: ${groupChatId}`);
-    console.log(`Bot Token: ${token}`);
-    console.log(`Formatted Date: ${formattedDate}`);
-    console.log(`Message: ${message}`);
-
-    sendMessage(groupChatId, message)
-    console.log("Message sent successfully.");
+https://www.onepa.gov.sg/facilities/availability?facilityId=kallangcc_BADMINTONCOURTS&date=${formattedDate}&time=all`;
+    const res = await fetch(`${process.env.TELEGRAM_BOT_REQUEST_URL}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: process.env.GROUP_CHAT_ID,
+            text: message,
+            parse_mode: "HTML",
+        }),
+    });
     return "Message sent successfully.";
 };

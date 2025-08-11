@@ -19,7 +19,7 @@ functions:
     badmintonHandler:
         handler: handler.run
         events:
-            - schedule: rate(1 minute) # Every day at 9 AM UTC+0
+            - schedule: cron(59 13 * * ? *) # Every day at 9:59 PM UTC+8
 
 plugins:
     - serverless-offline
